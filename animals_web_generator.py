@@ -28,6 +28,8 @@ def generate_animal_html(data):
     # create string for animal data to put in placeholder
     output = ""
     for animal in data:
+        output += '<li class="cards__item">'
+
         name = animal.get("name")
         characteristics = animal.get("characteristics", {})
         diet = characteristics.get("diet")
@@ -36,15 +38,15 @@ def generate_animal_html(data):
 
         # check if fields exist and if so, add them to output
         if name:
-            output += f"Name: {name}\n"
+            output += f"Name: {name}<br/>\n"
         if diet:
-            output += f"Diet: {diet}\n"
+            output += f"Diet: {diet}<br/>\n"
         if locations:
-            output += f"Location: {locations[0]}\n"
+            output += f"Location: {locations[0]}<br/>\n"
         if animal_type:
-            output += f"Type: {animal_type}\n"
+            output += f"Type: {animal_type}<br/>\n"
 
-        output += "\n"  # add row between animals for readability
+        output += '</li>'
 
     # replace placeholder in HTML template with new string (output)
     print(output)

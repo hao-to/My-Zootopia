@@ -1,41 +1,68 @@
 import json
 
 
-def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+def load_json_data(file_path):
+    """loads JSON-data from specified file path"""
+    with open(file_path, "r") as handle:
+        return json.load(handle)
 
 
-animals_data = load_data('animals_data.json')
+def load_file_content(file_path):
+    """loads the content of a text file and returns it as a string."""
+    with open(file_path, "r") as file:
+        return file.read()
 
 
-def get_animal_data():
-
-  """
-  Prints details about each animal from the loaded JSON data.
-
-  For each animal, displays name, diet, primary location, and type if available.
-  Data is retrieved from the "characteristics" dictionary and "locations" list.
-
-  Each animal's details are separated by a blank line for readability.
-  """
-
-  for animal in animals_data:
-    name = animal.get("name")
-    characteristics = animal.get("characteristics", {})  # extracting info from characteristics-Dict
-    diet = characteristics.get("diet")
-    location = animal.get("locations")
-    animal_type = characteristics.get("type")  # extracting info from characteristics-Dict
-    if name:
-      print(f"Name: {name}")
-    if diet:
-      print(f"Diet: {diet}")
-    if location:  # checking if `locations` exists and is not empty
-      print(f"Location: {location[0]}")
-    if animal_type:
-      print(f"Type: {animal_type}")
-    print()  # print new line for better readability
+def save_text_to_file(output_path, content):
+    """saves text content to a specified file path."""
+    with open(output_path, "w") as file:
+        file.write(content)
 
 
-get_animal_data()
+def generate_animal_html(data):
+    """loads HTML template, generates/inserts animal data and saves result in new HTML file."""
+
+    # load HTML template using load_file_content function
+    html_template = load_file_content('animals_template.html')
+
+    # create string for animal data to put in placeholder
+    output = ""
+    for animal in data:
+        name = animal.get("name")
+        characteristics = animal.get("characteristics", {})
+        diet = characteristics.get("diet")
+        locations = animal.get("locations")
+        animal_type = characteristics.get("type")
+
+        # check if fields exist and if so, add them to output
+        if name:
+            output += f"Name: {name}\n"
+        if diet:
+            output += f"Diet: {diet}\n"
+        if locations:
+            output += f"Location: {locations[0]}\n"
+        if animal_type:
+            output += f"Type: {animal_type}\n"
+
+        output += "\n"  # add row between animals for readability
+
+    # replace placeholder in HTML template with new string (output)
+    print(output)
+    html_content = html_template.replace('__REPLACE_ANIMALS_INFO__', output)
+
+    # save generated HTML content to the specified output file
+    save_text_to_file('animals.html', html_content)
+
+
+def main():
+    """Main function to load data, generate HTML, and save output."""
+    # Load animal data from JSON file
+    animals_data = load_json_data('animals_data.json')
+
+    # Generate HTML and save it to a file
+    generate_animal_html(animals_data)
+
+
+# Run the main function only if this script is executed directly
+if __name__ == "__main__":
+    main()

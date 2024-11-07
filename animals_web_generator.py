@@ -20,15 +20,16 @@ def save_text_to_file(output_path, content):
 
 
 def generate_animal_html(data):
-    """loads HTML template, generates/inserts animal data and saves result in new HTML file."""
+    """loads html template, generates/inserts animal data as html and saves result in new HTML file."""
 
-    # load HTML template using load_file_content function
+    # load html template using load_file_content function
     html_template = load_file_content('animals_template.html')
 
-    # create string for animal data to put in placeholder
+    # create html string for animal data to put in placeholder
     output = ""
     for animal in data:
-        output += '<li class="cards__item">'
+        # start a new list item with the appropriate class
+        output += '<li class="cards__item">\n'
 
         name = animal.get("name")
         characteristics = animal.get("characteristics", {})
@@ -36,17 +37,23 @@ def generate_animal_html(data):
         locations = animal.get("locations")
         animal_type = characteristics.get("type")
 
-        # check if fields exist and if so, add them to output
+        # add name as card title
         if name:
-            output += f"Name: {name}<br/>\n"
-        if diet:
-            output += f"Diet: {diet}<br/>\n"
-        if locations:
-            output += f"Location: {locations[0]}<br/>\n"
-        if animal_type:
-            output += f"Type: {animal_type}<br/>\n"
+            output += f'<div class="card__title"> {name}</div>\n'
 
-        output += '</li>'
+        # add other characteristics in card text
+        output += '<p class="card__text">\n'
+
+        if diet:
+            output += f'<strong>Diet:</strong> {diet}<br/>\n'
+        if locations:
+            output += f'<strong>Location:</strong> {locations[0]}<br/>\n'
+        if animal_type:
+            output += f'<strong>Type: </strong>{animal_type}<br/>\n'
+        output += '  </p>\n'
+
+        # close the list item for this animal
+        output += '</li>\n'
 
     # replace placeholder in HTML template with new string (output)
     print(output)

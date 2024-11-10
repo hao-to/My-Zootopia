@@ -2,25 +2,46 @@ import json
 
 
 def load_json_data(file_path):
-    """loads JSON-data from specified file path"""
+    """loads JSON-data from specified file path
+
+    Args: file_path (str): path to json file
+    
+    Returns: dict: parsed json data as dictionary"""
+    
     with open(file_path, "r") as handle:
         return json.load(handle)
 
 
 def load_file_content(file_path):
-    """loads the content of a text file and returns it as a string."""
+    """loads the content of a text file and returns it as a string.
+
+    Args: file_path (str): path to text file
+
+    Returns: content of file as str"""
+
     with open(file_path, "r") as file:
         return file.read()
 
 
 def save_text_to_file(output_path, content):
-    """saves text content to a specified file path."""
+    """saves text content to a specified file path.
+
+    Args:
+    - output_path (str): path to file where content will be saved
+    - content (str): text content to save
+
+    Returns: None"""
+    
     with open(output_path, "w") as file:
         file.write(content)
 
 
 def serialize_animal(animal):
-    """generates html string for a single animal entry"""
+    """generates html string for a single animal entry
+
+    Args: animal (dict): dictionary with animal data
+
+    Returns: html string for the animal entry"""
 
     output = '<li class="cards__item">\n'
 
@@ -52,7 +73,11 @@ def serialize_animal(animal):
 
 
 def generate_animal_html(data):
-    """loads html template, serializes each animal to html and saves result in new HTML file."""
+    """loads html template, serializes each animal to html and saves result in new HTML file.
+
+    Args: data (list): list of dictionaries, each representing an animal's data
+
+    Returns: None"""
 
     # load html template using load_file_content function
     html_template = load_file_content('animals_template.html')
@@ -70,7 +95,8 @@ def generate_animal_html(data):
 
 
 def main():
-    """Main function to load data, generate HTML, and save output."""
+    """Main function to load data, generate html, and save output.
+    returns: None"""
     # load animal data from JSON file
     animals_data = load_json_data('animals_data.json')
 
